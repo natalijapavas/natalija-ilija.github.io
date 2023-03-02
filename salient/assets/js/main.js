@@ -24,6 +24,49 @@ $(document).ready(function($) {
 		topSection.css('height', windowHeight);       
 	});
 
+
+    // Slike za slideshow, TODO: resize tako da sve lepo izgledaju
+    var images = [
+        '/images/img1.jpg',
+        '/images/img2.jpg',
+        '/images/img3.jpg',
+        '/images/img4.jpg',
+        '/images/img5.jpg',
+        '/images/img6.jpg'
+    ];
+    
+    //Preload-ovanje slika da ne bi bilo real-time odesecno ucitavanje
+    var loadedImages = [];
+    var imageCount = 0;
+    for (var i = 0; i < images.length; i++) {
+    var img = new Image();
+    img.onload = function() {
+        imageCount++;
+        if (imageCount === images.length) {
+        //pocinje slideshow tek kad se zavrsi preloadovanje
+        startSlideshow();
+        }
+    };
+    img.src = images[i];
+    loadedImages.push(img);
+    //-------------------------------------------------------------------
+
+    function startSlideshow() {
+        var imageIndex = 0;
+        var landingHero = document.querySelector('.landing-hero');
+        landingHero.style.backgroundImage = 'url("' + images[imageIndex] + '")';
+      
+         setInterval(function() {
+            imageIndex = (imageIndex + 1) % images.length;
+        
+            landingHero.classList.add('fadeout');
+            setTimeout(function() {
+            landingHero.style.backgroundImage = 'url("' + images[imageIndex] + '")';
+            landingHero.classList.remove('fadeout');
+            }, 500);
+        }, 5000);
+      }
+}        
     /* ==============================================
         Collapse menu on click
     =============================================== */
@@ -56,13 +99,14 @@ $(document).ready(function($) {
         Hero slider
     =============================================== */
 
-    $('.caption-slides').bxSlider({
-      pager: false,
-      mode: 'fade',
-      adaptiveHeight: true,
-      controls: false,
-      auto: true
-    });
+    // Ovo sluzi ako imamo vise naslova da se faduju, nepotrebno sad
+    // $('.caption-slides').bxSlider({
+    //   pager: false,
+    //   mode: 'fade',
+    //   adaptiveHeight: true,
+    //   controls: false,
+    //   auto: true
+    // });
 
     /* ==============================================
         Smooth Scroll on anchors
@@ -118,12 +162,12 @@ $(document).ready(function($) {
         Skills bar
     =============================================== */
 
-        $('.progress-bar').each(function(i) {
-            $(this).appear(function() {
-                var percent = $(this).attr('aria-valuenow');
-                $(this).animate({'width' : percent + '%'});
-            });
+    $('.progress-bar').each(function(i) {
+        $(this).appear(function() {
+            var percent = $(this).attr('aria-valuenow');
+            $(this).animate({'width' : percent + '%'});
         });
+    });
 
     /* ==============================================
     Placeholder

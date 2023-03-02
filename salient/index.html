@@ -54,8 +54,16 @@
 <body>
 
   <!-- Preload the Whole Page -->
-  <div id="preloader">      
-    <div id="loading-animation">&nbsp;</div>
+  <div id="preloader">
+    <!-- Promenjen loading gif -->
+    <div id="loading-animation">
+      <div class="loading">
+        <svg width="64px" height="48px">
+            <polyline points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24" id="back"></polyline>
+          <polyline points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24" id="front"></polyline>
+        </svg>
+      </div>
+    </div>
   </div>
 
   <!-- Navbar -->
@@ -70,18 +78,16 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-           <a class="navbar-brand" href="#"><img src="assets/images/logo.png" alt=""></a>
+           <a class="navbar-brand" href="#"><img src="assets/images/logo.jpg" alt="" style="width: 50px; height: 50px;"></a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="navigation-nav">
           <ul class="nav navbar-nav navbar-right">
             <li class="active"><a class="section-scroll" href="#wrapper">Home</a></li>
             <li><a href="#landing-offer">About</a></li>
-            <li><a href="#features-section">Services</a></li>
-            <li><a href="#team-section">Team</a></li>
-            <li><a href="#screenshots-section">Works</a></li>
-            <li><a href="#prices-section">Prices</a></li>
-            <li><a href="#subscribe-section">Subscribe</a></li>
+            <li><a href="#features-section">Dropbox</a></li>
+            <li><a href="#screenshots-section">Location</a></li>
+            <li><a href="#prices-section">RSVP</a></li>
             <li><a href="#contact-section">Contact</a></li>
           </ul>
         </div><!-- /.navbar-collapse -->
@@ -106,21 +112,9 @@
                     <ul class="caption-slides">
 
                       <li class="caption">
-                        <h1>A Legacy of Quality</h1>
+                        <h1 class = "hero">Natalija &amp; Ilija</h1>
                         <div class="div-line"></div>
-                        <p class="hero">Branding, Photography &amp; Web Development</p>
-                      </li>
-
-                      <li class="caption">
-                        <h1>RESPONSIVE TEMPLATES</h1>
-                        <div class="div-line"></div>
-                        <p class="hero">Design &amp; Development</p>
-                      </li>
-
-                      <li class="caption">
-                        <h1>HIGH QUALITY CODE</h1>
-                        <div class="div-line"></div>
-                        <p class="hero">HTML5 &amp; CSS3</p>
+                        <p class="hero">19.05.2023</p>
                       </li>
 
                     </ul>
@@ -128,7 +122,7 @@
                 </div> <!-- end hero-text -->
 
                 <div class="hero-btn">
-                  <a href="#landing-offer" class="btn btn-clean">Read more</a>
+                  <a href="#landing-offer" class="btn btn-clean">Više informacija</a>
                 </div> <!-- end hero-btn -->
 
               </div> <!-- end col-md-6 -->
@@ -148,11 +142,36 @@
           <div class="title-section big-title-sec animated out" data-animation="fadeInUp" data-delay="0">
             <div class="row">
               <div class="col-sm-8 col-sm-offset-2">
-                <h2 class="big-title">Some information about us</h2>
-                <h1 class="big-subtitle">We’re small branding &amp; digital studio</h1>
+                
+                
+                
+                <h1 class="big-subtitle">Dragi prijatelji,</h1>
+                <h1 class="big-subtitle">sa zadovoljstvom vas pozivamo na našu proslavu venčanja koja će se održati u petak, 19. maja u 17 sati, na splavu The Weekend, u Beogradu.
+                    </br>
+                    Radujemo se što ćete s nama podeliti ovaj poseban dan u našim životima. Biće to prilika za zajedničko slavlje, ples i uživanje u ukusnoj hrani i piću. 
+                  </br>
+                    Molimo vas da nam potvrdite svoj dolazak najkasnije do 1. Maja.
+                  </br>
+                    S radošću vas očekujemo!
+                  </br>
+                    Vaši mladenci,
+                  </br>
+                    Natalija i Ilija Sibinović
+              </h1>
                 <hr>
-                <p class="about-text">Cras porta dolor ut velit imperdiet, quis sodales tellus facilisis. Vestibulum magna turpis, tincidun blandit semper lorem. Mauris nodesterin feugiat neque, a aliquet ligula. Sed non felis tincidunt, facilisis felis vitae, mollis est. Nulla sapien dui, feugiat sed velit a, egestas porta magna.</p>
-              </div>
+                <p class="about-text">Dear friends,
+                  <br>
+                  We are delighted to invite you to our wedding celebration which will take place on Friday, May 19th at 5 PM, on the boat The Weekend, in Belgrade.
+                  <br>
+                  We are looking forward to sharing this special day with you. It will be an occasion for celebrating, dancing, and enjoying delicious food and drinks.
+                  <br>
+                  Please confirm your attendance no later than May 1st.
+                  <br>
+                  We are excitedly waiting for you!
+                  <br>
+                  Your newlyweds,
+                  <br>
+                  Natalija and Ilija Sibinović</div>
             </div> <!-- End row -->
           </div> <!-- end title-section -->
 
