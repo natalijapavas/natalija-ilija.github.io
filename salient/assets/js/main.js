@@ -1,8 +1,3 @@
-/*
-	Salient by TEMPLATE STOCK
-	templatestock.co @templatestock
-	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
-*/
 
 var $ = jQuery.noConflict();
 
@@ -16,7 +11,7 @@ $(document).ready(function($) {
     =============================================== */
     
 	var windowHeight = $(window).height(),
-		topSection = $('#hero-section');
+		topSection = $('#start-section');
 	topSection.css('height', windowHeight);
 
 	$(window).resize(function(){
@@ -25,17 +20,17 @@ $(document).ready(function($) {
 	});
 
 
-    // Slike za slideshow, TODO: resize tako da sve lepo izgledaju
+    // Slideshow TODO: resize tako da sve lepo izgledaju
     var images = [
-        '/images/img1.jpg',
-        '/images/img2.jpg',
-        '/images/img3.jpg',
-        '/images/img4.jpg',
-        '/images/img5.jpg',
-        '/images/img6.jpg'
+        'images/img1.jpg',
+        'images/img2.jpg',
+        'images/img3.jpg',
+        'images/img4.jpg',
+        'images/img5.jpg',
+        'images/img6.jpg'
     ];
     
-    //Preload-ovanje slika da ne bi bilo real-time odesecno ucitavanje
+    //Preload the images
     var loadedImages = [];
     var imageCount = 0;
     for (var i = 0; i < images.length; i++) {
@@ -43,7 +38,6 @@ $(document).ready(function($) {
     img.onload = function() {
         imageCount++;
         if (imageCount === images.length) {
-        //pocinje slideshow tek kad se zavrsi preloadovanje
         startSlideshow();
         }
     };
@@ -53,16 +47,16 @@ $(document).ready(function($) {
 
     function startSlideshow() {
         var imageIndex = 0;
-        var landingHero = document.querySelector('.landing-hero');
-        landingHero.style.backgroundImage = 'url("' + images[imageIndex] + '")';
+        var landingStart = document.querySelector('.landing-start');
+        landingStart.style.backgroundImage = 'url("' + images[imageIndex] + '")';
       
          setInterval(function() {
             imageIndex = (imageIndex + 1) % images.length;
         
-            landingHero.classList.add('fadeout');
+            landingStart.classList.add('fadeout');
             setTimeout(function() {
-            landingHero.style.backgroundImage = 'url("' + images[imageIndex] + '")';
-            landingHero.classList.remove('fadeout');
+            landingStart.style.backgroundImage = 'url("' + images[imageIndex] + '")';
+            landingStart.classList.remove('fadeout');
             }, 500);
         }, 5000);
       }
@@ -96,7 +90,7 @@ $(document).ready(function($) {
     });
 
     /* ==============================================
-        Hero slider
+        Start slider
     =============================================== */
 
     // Ovo sluzi ako imamo vise naslova da se faduju, nepotrebno sad
@@ -159,17 +153,6 @@ $(document).ready(function($) {
     });
 
     /* ==============================================
-        Skills bar
-    =============================================== */
-
-    $('.progress-bar').each(function(i) {
-        $(this).appear(function() {
-            var percent = $(this).attr('aria-valuenow');
-            $(this).animate({'width' : percent + '%'});
-        });
-    });
-
-    /* ==============================================
     Placeholder
     =============================================== */ 
 
@@ -197,72 +180,60 @@ $(document).ready(function($) {
             el.removeClass('out');
         }    
     },{accY: -150});  
-    
-
-    /* ==============================================
-        MailChip
-    =============================================== */
-
-    $('.mailchimp').ajaxChimp({
-        callback: mailchimpCallback,
-        url: "http://clas-design.us10.list-manage.com/subscribe/post?u=5ca5eb87ff7cef4f18d05e127&amp;id=9c23c46672" //Replace this with your own mailchimp post URL. Don't remove the "". Just paste the url inside "".  
-    });
-
-    function mailchimpCallback(resp) {
-         if (resp.result === 'success') {
-            $('.subscription-success').html('<span class="icon-happy"></span><br/>' + resp.msg).fadeIn(1000);
-            $('.subscription-error').fadeOut(500);
-        
-        } else if(resp.result === 'error') {
-            $('.subscription-error').html('<span class="icon-sad"></span><br/>' + resp.msg).fadeIn(1000);
-            $('.subscription-success').fadeOut(500);
-        }  
-    }
 
 
     /* ==============================================
-    Contact Form
+    RSVP Form
     =============================================== */
 
-    $('#contactform').submit(function(){
-
-        var action = $(this).attr('action');
-
-        $("#alert").slideUp(750,function() {
-            $('#alert').hide();
-
-        $('#submit')
-            .after('<img src="../images/ajax-loader.GIF" class="contactloader" />')
-            .attr('disabled','disabled');
-
-        $.post(action, {
-            name: $('#name').val(),
-            email: $('#email').val(),
-            message: $('#message').val()
-        },
-            function(data){
-                document.getElementById('alert').innerHTML = data;
-                $('#alert').slideDown('slow');
-                $('#contactform img.contactloader').fadeOut('slow',function(){$(this).remove();});
-                $('#submit').removeAttr('disabled');
-                if(data.match('success') !== null) {
-                    $('#name').val('');
-                    $('#email').val('');
-                    $('#message').val('');
-                }
-            }
-        );
-
+    // TODO: the request is sent with status 200 but the data isn't written in weddinglistrsvp.csv
+    $(document).ready(function() {
+        $('#rsvpform').submit(function(event) {
+          event.preventDefault(); 
+      
+          $('#submit').attr('disabled','disabled');
+      
+          var form = $(this);
+          var url = form.attr('action');
+          var formData = form.serialize(); 
+      
+          $.post(url, formData)
+            .done(function(data) {
+              // Parse the response to check for success message
+              if (data.indexOf("success") != -1) {
+                // Extract name and surname from form data
+                var name = form.find('input[name="name"]').val();
+                var surname = form.find('input[name="surname"]').val();
+      
+                // Open the CSV file and write the name and surname
+                var file = 'weddinglistrsvp.csv';
+                var data = [name, surname];
+                var file_open = fopen($file, 'a');
+                fputcsv($file_open, $data);
+                fclose($file_open);
+      
+                // Show success message
+                $('#alert').html('Hvala! Uspješno ste potvrdili svoj dolazak.').addClass('alert-success').slideDown('slow');
+              } else {
+                // Show error message
+                $('#alert').html('Došlo je do greške, molimo pokušajte ponovo.').addClass('alert-danger').slideDown('slow');
+              }
+            })
+            .fail(function() {
+              // Show error message
+              $('#alert').html('Došlo je do greške, molimo pokušajte ponovo.').addClass('alert-danger').slideDown('slow');
+            })
+            .always(function() {
+              // Enable submit button
+              $('#submit').removeAttr('disabled');
+            });
         });
-
-        return false;
-
-    });
+      });
 
     // Countdown
     // To change date, simply edit: var endDate = "June 26, 2015 20:39:00";
     $(function() {
-      var endDate = "June 26, 2016 20:39:00";
+      var endDate = "May 19, 2023 17:00:00";
       $('.soon-countdown .row').countdown({
         date: endDate,
         render: function(data) {
@@ -294,103 +265,6 @@ $(document).ready(function($) {
     });
 
     /* ==============================================
-        Google Map
-    =============================================== */
-
-        var mapLocation = new google.maps.LatLng(34.031428,-118.2071542,17);
-        var $mapis = $('#map');
-        if ($mapis.length > 0) {
-            var map;
-            map = new GMaps({
-                streetViewControl : true,
-                overviewMapControl: true,
-                mapTypeControl: true,
-                zoomControl : true,
-                panControl : true,
-                scrollwheel: false,
-                center: mapLocation,
-                el: '#map',
-                zoom: 16,
-                styles: [{"featureType":"landscape","stylers":[{"saturation":-100},{"lightness":65},{"visibility":"on"}]},{"featureType":"poi","stylers":[{"saturation":-100},{"lightness":51},{"visibility":"simplified"}]},{"featureType":"road.highway","stylers":[{"saturation":-100},{"visibility":"simplified"}]},{"featureType":"road.arterial","stylers":[{"saturation":-100},{"lightness":30},{"visibility":"on"}]},{"featureType":"road.local","stylers":[{"saturation":-100},{"lightness":40},{"visibility":"on"}]},{"featureType":"transit","stylers":[{"saturation":-100},{"visibility":"simplified"}]},{"featureType":"administrative.province","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":-25},{"saturation":-100}]},{"featureType":"water","elementType":"geometry","stylers":[{"hue":"#ffff00"},{"lightness":-25},{"saturation":-97}]}]
-            });
-            var image = new google.maps.MarkerImage('../images/map-icon.png');
-            map.addMarker({
-                position: mapLocation,
-                icon: image,
-                title: 'Visia',
-                infoWindow: {
-                    content: '<p><strong>Visia</strong><br/>121 Somewhere Ave, Suite 123<br/>P: (123) 456-7890<br/>Australia</p>'
-                }
-            });
-        }
-
-    /* ==============================================
-     BX-Project Slider
-    =============================================== */
-
-        $(".project-slider").bxSlider({
-            pager: false,
-            controls: true,
-            auto: true,        // Boolean:  (true/false)
-            speed: 500,        // Animation speed.
-            pause: 5000,      // Milliseconds before progressing to next slide automatically. Use a falsey value to disable.
-            useCSS: false     // Boolean:  (true/false)
-        });
-
-    /* ==============================================
-     BX-Project Slider
-    =============================================== */
-
-        $(".blog-slider").bxSlider({
-            pager: false,
-            controls: true,
-            auto: true,        // Boolean:  (true/false)
-            speed: 500,        // Animation speed.
-            pause: 5000,      // Milliseconds before progressing to next slide automatically. Use a falsey value to disable.
-            useCSS: false     // Boolean:  (true/false)
-        });
-
-    /* ==============================================
-     BX-Slider Tweet&Process
-    =============================================== */
-
-
-        $('.tweet-slider').bxSlider({
-          adaptiveHeight: true,
-          controls: false,
-          auto: true
-        });
-
-    /* ==============================================
-        BxSlider Testimonial
-    =============================================== */ 
-
-    $(".testimonials-slider").bxSlider({
-        nextSelector: ".tc-arrows .tc-arrow-right",
-        prevSelector: ".tc-arrows .tc-arrow-left",
-        nextText: "<i class='fa fa-angle-right'></i>",
-        prevText: "<i class='fa fa-angle-left'></i>",
-        pager: false,
-        auto: true,          // Boolean:  (true/false)
-        pause: 5000,         // Milliseconds before progressing to next slide automatically. Use a falsey value to disable.
-        mode: 'vertical',    // Choose fade, slide
-        useCSS: false        // Boolean:  (true/false)
-    });
-
-    /* ==============================================
-        OWL Carousel
-    =============================================== */
-
-        $(".owl-carousel").owlCarousel({
- 
-            autoPlay: 3000, //Set AutoPlay to 3 seconds
-            items : 4,
-            itemsDesktop : [1199,3], //number of items displayed on resolution less then 1199px
-            itemsDesktopSmall : [979,3] //number of items displayed on resolution less then 979px
- 
-        });
-
-    /* ==============================================
         Responsive video
     =============================================== */
     
@@ -412,20 +286,6 @@ $(document).ready(function($) {
         $('.video-pop-up').magnificPopup({
             type: 'iframe',
         });
-
-    /* ==============================================
-        OWL Carousel (initialize screenshot carousel)
-    =============================================== */
-    
-    $(".screenshots-carousel").owlCarousel({
- 
-        autoPlay: 3000, //Set AutoPlay to 3 seconds
- 
-        items : 5,
-        itemsDesktop : [1199,3],
-        itemsDesktopSmall : [979,3]
- 
-    });
 
 });
 
