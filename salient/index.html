@@ -173,10 +173,6 @@
     </section>
     <!-- End About section -->
 
-    <section>
-      <div class="sep-section"></div>
-    </section>
-
     <!-- RSVP
     ================================================== -->
     <section>
@@ -212,6 +208,11 @@
                       <input type="submit" name="submit" value="Potvrđujem dolazak" id="submit" class="btn btn-sm btn-dark">
                     </div>
                   </form>
+                  <?php if (isset($_GET['success']) && $_GET['success'] == 'true'): ?>
+                    <div id="success-message" class="alert alert-success" role="alert">
+                      Hvala na potvrdi dolaska!
+                    </div>
+                  <?php endif; ?> 
                   <p style="font-size: 8px;"> RSVP označava "Répondez s'il vous plaît", što je francuski izraz koji znači "molim vas odgovorite". Vaš odgovor nam je važan jer nam pomaže da planiramo događaj, uključujući organizaciju hrane i pića.</p>
                 </div> <!-- end col-md-8 -->
               </div> <!-- end row -->
@@ -221,6 +222,10 @@
       </div>
     </section>
     <!-- End rsvp-section -->
+
+    <section>
+      <div class="sep-section"></div>
+    </section>
 
     <!-- Video section
     ================================================== -->
@@ -264,10 +269,14 @@
     </section>
     <!-- End prices section -->
 
+    <section>
+      <div class="sep-section"></div>
+    </section>
+
     <!-- Google map
     ================================================== -->
     <section>
-      <div id="location-section" style="text-align: center;">
+      <div id="location-section">
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2831.314038781074!2d20.385216615535143!3d44.794788279098746!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x475a6fa124465f0b%3A0xded19c3aceeffb99!2sSplav%20Weekend!5e0!3m2!1sen!2srs!4v1677192172345!5m2!1sen!2srs" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>  
       </div>
     </section>

@@ -19,30 +19,87 @@ $(document).ready(function($) {
 		topSection.css('height', windowHeight);       
 	});
 
+    /* ==============================================
+        Slideshow
+    =============================================== */
 
-    // Slideshow TODO: resize tako da sve lepo izgledaju
-    var images = [
-        'images/img1.jpg',
-        'images/img2.jpg',
-        'images/img3.jpg',
-        'images/img4.jpg',
-        'images/img5.jpg',
-        'images/img6.jpg'
+    var imagesDesktop = [
+        'images/venecija_landscape.jpg',
+        'images/valensija1_landscape.jpg',
+        'images/ronjenje_landscape.jpg',
+        'images/barselona2_landscape.jpg', 
+        'images/budimpesta_landscape.jpg',
+        'images/egipat1_landscape.jpg',
+        'images/hercegnovi2017_landscape.jpg',
+        'images/atina1_landscape.jpg',
+        'images/barselona5_landscape.jpg',
+        'images/atina2_landscape.jpeg',
+        'images/lubenice_landscape.jpg',
+        'images/prag_landscape.jpg',
+        'images/egipat3_landscape.jpg',
+        'images/veridba_landscape.jpg',
+        'images/skijanjekop_landscape.jpg',
+        'images/sah_landscape.jpg',
+        'images/madrid_landscape.jpg',
+        'images/zlatibor_landscape.jpeg',
+        'images/ivanjica_landscape.webp',
+        'images/skijanjebansko_landscape.jpg',
+        'images/egipat2_landscape.jpg',
+        'images/skijanjebansko2_landscape.jpg',
+        'images/valensija2_landscape.jpg',
+        'images/pariz2_landscape.jpg'
     ];
+
+    var imagesMobile = [
+        'images/egipat1_landscape.jpg',
+        'images/barselona4_portrait.jpg',
+        'images/plaza_portrait.jpg',
+        'images/barselona_portrait.jpg',
+        'images/atina_portrait.jpg',
+        'images/madrid1_portrait.jpg',
+        'images/lubenice_landscape.jpg',
+        'images/prag_landscape.jpg',
+        'images/egipat3_landscape.jpg',
+        'images/barselona2_portrait.jpg',
+        'images/rafting_portrait.jpg',
+        'images/skijanjekop_landscape.jpg',
+        'images/atina2_portrait.jpg',
+        'images/madrid_landscape.jpg',
+        'images/barselona3_portrait.jpg',
+        'images/ivanjica_landscape.webp',
+        'images/barselona5_portrait.jpg',
+        'images/atina3_portrait.jpeg',
+        'images/valensija2_landscape.jpg',
+        'images/pariz_portrait.jpg'
+    ];
+
+    var images = imagesDesktop;
     
-    //Preload the images
+    if ($(window).width() < 768) {
+        images = imagesMobile;
+    }
+
     var loadedImages = [];
     var imageCount = 0;
     for (var i = 0; i < images.length; i++) {
-    var img = new Image();
-    img.onload = function() {
-        imageCount++;
-        if (imageCount === images.length) {
-        startSlideshow();
+        var img = new Image();
+        img.onload = function() {
+            imageCount++;
+            if (imageCount === images.length) {
+            startSlideshow();
+            }
+            };
+        img.src = images[i];
+        loadedImages.push(img);
+    
+    // add an event listener for window resize
+    $(window).on('resize', function() {
+        if ($(window).width() < 768) {
+            images = imagesMobile;
+        } else {
+            images = imagesDesktop;
         }
-    };
-    img.src = images[i];
-    loadedImages.push(img);
+    });
     //-------------------------------------------------------------------
 
     function startSlideshow() {
@@ -60,7 +117,7 @@ $(document).ready(function($) {
             }, 500);
         }, 5000);
       }
-}        
+    }        
     /* ==============================================
         Collapse menu on click
     =============================================== */
@@ -88,19 +145,6 @@ $(document).ready(function($) {
         horizontalScrolling: false,
         verticalOffset: 0
     });
-
-    /* ==============================================
-        Start slider
-    =============================================== */
-
-    // Ovo sluzi ako imamo vise naslova da se faduju, nepotrebno sad
-    // $('.caption-slides').bxSlider({
-    //   pager: false,
-    //   mode: 'fade',
-    //   adaptiveHeight: true,
-    //   controls: false,
-    //   auto: true
-    // });
 
     /* ==============================================
         Smooth Scroll on anchors
@@ -186,51 +230,20 @@ $(document).ready(function($) {
     RSVP Form
     =============================================== */
 
-    // TODO: the request is sent with status 200 but the data isn't written in weddinglistrsvp.csv
-    $(document).ready(function() {
-        $('#rsvpform').submit(function(event) {
-          event.preventDefault(); 
-      
-          $('#submit').attr('disabled','disabled');
-      
-          var form = $(this);
-          var url = form.attr('action');
-          var formData = form.serialize(); 
-      
-          $.post(url, formData)
-            .done(function(data) {
-              // Parse the response to check for success message
-              if (data.indexOf("success") != -1) {
-                // Extract name and surname from form data
-                var name = form.find('input[name="name"]').val();
-                var surname = form.find('input[name="surname"]').val();
-      
-                // Open the CSV file and write the name and surname
-                var file = 'weddinglistrsvp.csv';
-                var data = [name, surname];
-                var file_open = fopen($file, 'a');
-                fputcsv($file_open, $data);
-                fclose($file_open);
-      
-                // Show success message
-                $('#alert').html('Hvala! Uspješno ste potvrdili svoj dolazak.').addClass('alert-success').slideDown('slow');
-              } else {
-                // Show error message
-                $('#alert').html('Došlo je do greške, molimo pokušajte ponovo.').addClass('alert-danger').slideDown('slow');
-              }
-            })
-            .fail(function() {
-              // Show error message
-              $('#alert').html('Došlo je do greške, molimo pokušajte ponovo.').addClass('alert-danger').slideDown('slow');
-            })
-            .always(function() {
-              // Enable submit button
-              $('#submit').removeAttr('disabled');
-            });
-        });
-      });
+    // Get the success message element
+    var successMessage = $('#success-message');
 
-    // Countdown
+    // If the success message element exists
+    if (successMessage.length) {
+    // Fade it out after 5 seconds
+    setTimeout(function() {
+        successMessage.fadeOut();
+    }, 5000);
+    }
+
+    /* ==============================================
+    Countdown
+    =============================================== */
     // To change date, simply edit: var endDate = "June 26, 2015 20:39:00";
     $(function() {
       var endDate = "May 19, 2023 17:00:00";

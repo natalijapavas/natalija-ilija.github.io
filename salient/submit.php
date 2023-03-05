@@ -1,15 +1,18 @@
 <?php
-if(isset($_POST['submit'])) {
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST['name'];
     $surname = $_POST['surname'];
 
-    $file = 'weddinglistrsvp.csv';
     $data = array($name, $surname);
 
-    $file_open = fopen($file, 'a');
-    fputcsv($file_open, $data);
-    fclose($file_open);
+    $file = fopen('rsvp.csv', 'a');
+    fputcsv($file, $data);
+    fclose($file);
 
-    echo "success";
+    session_start();
+    $_SESSION['form_success'] = true;
+    header("Location: index.html#rsvp-section");
+
+    exit();
 }
 ?>
